@@ -2,10 +2,13 @@ package main
 
 import (
 	"context"
+	pb "github.com/longln/common/api"
+
 )
 
 type OrderService interface {
 	CreateOrder(context.Context) error
+	ValidateOrder(context.Context, *pb.CreateOrderRequest) error
 }
 
 

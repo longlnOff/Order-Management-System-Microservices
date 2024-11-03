@@ -27,7 +27,7 @@ func main() {
 	service.CreateOrder(context.Background())
 
 	log.Println("GRPC server started at", grpcAddress)
-	NewGRPCHandler(grpcServer)
+	NewGRPCHandler(grpcServer, service)
 
 	if err := grpcServer.Serve(l); err != nil {
 
