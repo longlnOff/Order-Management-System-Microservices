@@ -6,20 +6,22 @@ import (
 
 	"github.com/longln/common"
 	pb "github.com/longln/common/api"
+	"github.com/longln/gateway/gateway"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 type handler struct {
 	// gateway
-	client pb.OrderServiceClient
+	gateway gateway.OrderGateway
 }
 
-func NewHandler(client pb.OrderServiceClient) *handler {
+func NewHandler(gateway gateway.OrderGateway) *handler {
 	return &handler{
-		client: client,
+		gateway: gateway,
 	}
 }
+
 
 func (h *handler) registerRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("POST /api/customers/{customerID}/orders", h.HandleCreateOrder)
@@ -41,7 +43,7 @@ func (h *handler) HandleCreateOrder(w http.ResponseWriter, r *http.Request) {
 	}
 
 
-	order, err := h.client.CreateOrder(r.Context(), 
+	order, err := h.gateway.CreateOrder(r.Context(), 
 										&pb.CreateOrderRequest{
 											CustomerID: customerID,
 											Items:      items,
