@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	// "fmt"
 	"log"
 
 	pb "github.com/longln/common/api"

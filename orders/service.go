@@ -2,8 +2,6 @@ package main
 
 import (
 	"context"
-	"log"
-
 	"github.com/longln/common"
 	pb "github.com/longln/common/api"
 )
@@ -26,8 +24,7 @@ func (s *service) ValidateOrder(ctx context.Context, p *pb.CreateOrderRequest) e
 		return common.ErrNoItems
 	}
 
-	mergeditems := mergeItemsQuantities(p.Items)
-	log.Println(mergeditems)
+	p.Items = mergeItemsQuantities(p.Items)
 
 	// validate with the stock service
 
