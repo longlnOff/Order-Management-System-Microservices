@@ -5,7 +5,7 @@ import (
 	"log"
 	"net"
 	"time"
-
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/longln/common"
 	"github.com/longln/common/discovery"
 	"github.com/longln/common/discovery/consul"
