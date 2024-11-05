@@ -72,6 +72,6 @@ func main() {
 	NewGRPCHandler(grpcServer, service, ch)
 
 	if err := grpcServer.Serve(l); err != nil {
-
+		log.Fatal(err.Error())
 	}
 }

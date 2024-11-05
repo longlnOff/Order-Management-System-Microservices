@@ -39,7 +39,7 @@ func (h *grpcHandler) CreateOrder(ctx context.Context, r *pb.CreateOrderRequest)
 	)
 
 	if err != nil {
-		return nil, err
+		log.Fatal(err)
 	}
 	marshalledOrder, err := json.Marshal(order)
 	if err != nil {
