@@ -38,7 +38,7 @@ func (c *consumer) Listen (ch *amqp091.Channel) {
 		log.Fatal(err)
 	}
 
-	// var forever chan struct{}
+	var forever chan struct{}
 
 	go func() {
 		for msg := range msgs {
@@ -54,24 +54,8 @@ func (c *consumer) Listen (ch *amqp091.Channel) {
 				continue
 			}
 			log.Printf("Payment link: %s", paymentLink)
-			// err = ch.PublishWithContext(
-			// 	context.Background(),
-			// 	"",
-			// 	broker.OrderCreatedPaid,
-			// 	false,
-			// 	false,
-			// 	amqp091.Publishing{
-			// 		ContentType: "text/plain",
-			// 		Body:        []byte(paymentLink),
-			// 		DeliveryMode: amqp091.Persistent,
-			// 	})
-			// if err != nil {
-			// 	log.Printf("failed to publish payment link: %v", err)
-			// 	continue
-			// }
-
 		}
 	}()
 
-
+	<-forever
 }	

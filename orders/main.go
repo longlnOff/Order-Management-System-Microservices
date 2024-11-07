@@ -66,7 +66,7 @@ func main() {
 
 	store := NewStore()
 	service := NewService(store)
-	service.CreateOrder(context.Background())
+	// service.CreateOrder(context.Background())
 
 	log.Println("GRPC server started at", grpcAddress)
 	NewGRPCHandler(grpcServer, service, ch)

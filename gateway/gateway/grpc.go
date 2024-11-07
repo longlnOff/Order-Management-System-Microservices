@@ -2,6 +2,7 @@ package gateway
 
 import (
 	"context"
+	"log"
 
 	pb "github.com/longln/common/api"
 	"github.com/longln/common/discovery"
@@ -30,6 +31,6 @@ func (g *gateway) CreateOrder(ctx context.Context, req *pb.CreateOrderRequest) (
 									Items:      req.Items,
 								})
 	
-	
+	log.Printf("order: %v", order)
 	return order, err
 }

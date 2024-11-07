@@ -5,7 +5,7 @@ import (
 	"log"
 	"net"
 	"time"
-
+	stripeProcessor "github.com/longln/payments/processor/stripe"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/longln/common"
 	"github.com/longln/common/broker"
@@ -61,7 +61,9 @@ func main() {
 		ch.Close()
 	}()
 
-	svc := NewService()
+
+	stripePorcessor := stripeProcessor.NewProcessor()
+	svc := NewService(stripePorcessor)
 
 	amqpConsummer := NewConsumer(svc)
 

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+
 	"github.com/longln/common"
 	pb "github.com/longln/common/api"
 )
@@ -15,20 +16,41 @@ func NewService(store OrderStore) *service {
 	return &service{store: store}
 }
 
-func (s *service) CreateOrder(ctx context.Context) error {
-	return nil
-}
-
-func (s *service) ValidateOrder(ctx context.Context, p *pb.CreateOrderRequest) error {
-	if len(p.Items) == 0 {
-		return common.ErrNoItems
+func (s *service) CreateOrder(ctx context.Context, p *pb.CreateOrderRequest) (*pb.Order, error) {
+	items, err := s.ValidateOrder(ctx, p)
+	if err != nil {
+		return nil, err
+	}
+	order := &pb.Order{
+		ID: "42",
+		CustomerID: p.CustomerID,
+		Items: items,
+		Status: "pending",
 	}
 
-	p.Items = mergeItemsQuantities(p.Items)
+	return order, nil
+}
+
+func (s *service) ValidateOrder(ctx context.Context, p *pb.CreateOrderRequest) ([]*pb.Item, error) {
+	if len(p.Items) == 0 {
+		return nil, common.ErrNoItems
+	}
+
+	merge := mergeItemsQuantities(p.Items)
 
 	// validate with the stock service
 
-	return nil
+	// Temporary
+	var itemsWithPrice []*pb.Item
+	for _, i := range(merge) {
+		itemsWithPrice = append(itemsWithPrice, &pb.Item{
+			ID: i.ItemID,
+			PriceID: "price_1QIS1pFfewWNTBtoJLn9m0qh",
+			Quantity: i.Quantity,
+		})
+	}
+
+	return itemsWithPrice, nil
 }
 
 
