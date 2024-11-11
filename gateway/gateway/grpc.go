@@ -34,3 +34,19 @@ func (g *gateway) CreateOrder(ctx context.Context, req *pb.CreateOrderRequest) (
 	log.Printf("order: %v", order)
 	return order, err
 }
+
+
+
+func (g *gateway) GetOrder(ctx context.Context, orderID string, customerID string) (*pb.Order, error) {
+	conn, err := discovery.ServiceConnection(ctx, "orders", g.registry)
+	if err != nil {
+		return nil, err
+	}
+
+	c := pb.NewOrderServiceClient(conn)
+	
+	return c.GetOrder(ctx, &pb.GetOrderRequest{
+		OrderID: orderID,
+		CustomerID: customerID,
+	})	
+}

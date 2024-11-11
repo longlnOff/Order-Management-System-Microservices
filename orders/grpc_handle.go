@@ -25,9 +25,22 @@ func NewGRPCHandler(grpcServer *grpc.Server, service OrderService, channel *amqp
 	pb.RegisterOrderServiceServer(grpcServer, handler)
 }
 
+func (h *grpcHandler) GetOrder(ctx context.Context, r *pb.GetOrderRequest) (*pb.Order, error) {
+	order, err := h.service.GetOrder(ctx, r)
+	if err != nil {
+		return nil, err
+	}
+	return order, nil
+}
+
 func (h *grpcHandler) CreateOrder(ctx context.Context, r *pb.CreateOrderRequest) (*pb.Order, error) {
 	// order := &pb.Order{ID: "42", Items: r.Items}
-	order, err := h.service.CreateOrder(ctx, r)
+	items, err := h.service.ValidateOrder(ctx, r)
+	if err != nil {
+		return nil, err
+	}
+	order, err := h.service.CreateOrder(ctx, r, items)
+	
 	log.Printf("New order received!\nOrder: %v\n", order)
 
 	if err != nil {
